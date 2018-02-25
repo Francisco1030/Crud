@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_novo"
+    <item
+        android:id="@+id/menu_novo"
+        android:icon="@drawable/ic_save"
         android:title="Novo"
-        android:icon="@drawable/ic_novo"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
     <item android:id="@+id/menu_editar"
         android:title="Editar"
@@ -14,7 +15,7 @@
 
     <item android:id="@+id/menu_deletar"
         android:title="Deletar"
-        android:icon="@drawable/ic_delete"
+        android:icon="@drawable/ic_apagar"
         app:showAsAction="always"/>
 
 </menu>
