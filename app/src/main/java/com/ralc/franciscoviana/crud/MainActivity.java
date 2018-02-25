@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Pessoa> listPessoa = new ArrayList<Pessoa>();
     private ArrayAdapter<Pessoa> arrayAdapterPessoa;
 
+    //Update e selecionar na lista
+    Pessoa pessoaSelecionada;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,17 @@ public class MainActivity extends AppCompatActivity {
 
         //Metodo listagem
         eventoDatabase();
+
+        //Selecionar pessoa
+        listV_dados.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pessoaSelecionada = (Pessoa)parent.getItemAtPosition(position);
+                editNome.setText(pessoaSelecionada.getNome());
+                editNome.setSelection(editNome.getText().length());
+                editEmail.setText(pessoaSelecionada.getEmail());
+            }
+        });
     }
 
     private void eventoDatabase() {
@@ -95,6 +111,21 @@ public class MainActivity extends AppCompatActivity {
             databaseReference.child("Pessoa").child(p.getId()).setValue(p);
             limpaCampus();
             Toast.makeText(MainActivity.this,"Usuário Salvo", Toast.LENGTH_SHORT).show();
+
+        }else if(id == R.id.menu_editar){
+            Pessoa p = new Pessoa();
+            p.setId(pessoaSelecionada.getId());
+            p.setNome(editNome.getText().toString().trim());
+            p.setEmail(editEmail.getText().toString().trim());
+            databaseReference.child("Pessoa").child(p.getId()).setValue(p);
+            limpaCampus();
+            Toast.makeText(MainActivity.this,"Usuário Atualizado", Toast.LENGTH_SHORT).show();
+        }else if(id == R.id.menu_deletar){
+            Pessoa p = new Pessoa();
+            p.setId(pessoaSelecionada.getId());
+            databaseReference.child("Pessoa").child(p.getId()).removeValue();
+            Toast.makeText(MainActivity.this,"Usuário Deletado", Toast.LENGTH_SHORT).show();
+            limpaCampus();
         }
         return true;
     }
